@@ -3,10 +3,13 @@ const bodyParser = require('body-parser');
 const validateToken = require('./cognitoAuth');
 const {addDish, getDishByRestaurantId, getAllDishes, getDishById} = require('./repository/dishRepository');
 const {addRestaurant, getAllRestaurants, getRestaurantById} = require('./repository/restaurantRepository');
+const cors = require('cors');
 
 
 const app = express();
 app.use(bodyParser.json());
+// allow cross-origin requests for all routes
+app.use(cors());
 const port = 8000;
 
 app.get('/', (req, res) => {
@@ -15,6 +18,7 @@ app.get('/', (req, res) => {
 
 // route for add restaurant
 app.post('/restaurant', async (req, res) => {
+  console.log("creating restaurant : ",req.body)
   try{
     // Add restaurant to the database
     const { restaurantId, name, address, cuisineTypes } = req.body;
@@ -41,6 +45,7 @@ app.get('/restaurant/:restaurantId', async (req, res) => {
 
 // get all restaurants
 app.get('/restaurants', async (req, res) => {
+  console.log("getting all restaurants")
   try{
     const restaurants = await getAllRestaurants();
     res.status(200).json({ message: 'Restaurants retrieved successfully!', restaurants });
