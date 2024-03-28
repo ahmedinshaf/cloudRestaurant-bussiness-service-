@@ -14,7 +14,8 @@ async function addDish(restaurantId, dish) {
         name: dish.name,
         price: dish.price,
         ingredients: dish.ingredients,
-        description: dish.description
+        description: dish.description,
+        photos: dish.photos
       },
     };
 
@@ -49,6 +50,8 @@ async function getAllDishes() {
 
 // get dish by id
 async function getDishById(restaurantId, dishId) {
+  console.log("restaurantId:", restaurantId)
+  console.log("dishId:", dishId)
     try {
         const params = new GetCommand(
             {
@@ -63,6 +66,7 @@ async function getDishById(restaurantId, dishId) {
         ) 
     
         const { Item } = await ddbDocClient.send(params);
+        console.log("Item:", Item)
         return Item;
     } catch (error) {
         console.error("Error getting dish by id:", error);
