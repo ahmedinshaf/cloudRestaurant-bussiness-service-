@@ -71,9 +71,9 @@ app.get('/:restaurantId/dishes', async (req, res) => {
 
 app.post('/dish', async (req, res) => {
   try{
-    const { restaurantId, dishId, name, price, ingredients, description } = req.body;
+    const { restaurantId, dishId, name, price, ingredients, description, photos } = req.body;
     // Add dish to the database
-    const addDishResult = await addDish(restaurantId, { dishId, name, price, ingredients, description });
+    const addDishResult = await addDish(restaurantId, { dishId, name, price, ingredients, description, photos });
     res.status(201).json({ message: 'Dish added successfully!', addDishResult});
   }catch(e){
     console.log(e);
@@ -82,11 +82,13 @@ app.post('/dish', async (req, res) => {
 });
 
 // get dish by Id
-app.get('/dish/:dishId', async (req, res) => {
+app.get('/dish', async (req, res) => {
   try{
-    const dishId = req.params.dishId;
+    const dishId = req.query.dishId;
+    const restaurantId = req.query.restaurantId;
+    console.log("restaurantId:", restaurantId)
+    console.log("dishId:", dishId)
     // get restaurant from body
-    const restaurantId = req.body.restaurantId;
     const dish = await getDishById(restaurantId, dishId);
     res.status(200).json({ message: 'Dish retrieved successfully!', dish });
   }catch(e){
